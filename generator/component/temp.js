@@ -1,47 +1,18 @@
-let <%= name %>Module = angular.module('<%= name %>', [
-])
+import <%= name %>Component from './<%= name %>.component';
 
-config(($stateProvider, $compileProvider) => {
+let <%= name %>Module = angular.module('<%= name %>', [])
+
+.config(($stateProvider) => {
   "ngInject";
+
   $stateProvider
     .state('<%= name %>', {
       url: '/<%= name %>',
-      controllerAs: 'vm',
-      controller: function($scope) {
-        this.name = "<%= name %>";
-      },
-      templateProvider: ['$q', function($q) {
-                let deferred = $q.defer();
-
-                require.ensure(['./<%= name %>.html'], function() {
-                    var template = require('./<%= name %>.html');
-                    deferred.resolve(template);
-                });
-
-                return deferred.promise;
-            }],
-
-      // Lazy load this component
-      resolve: {
-        loadComponent: ($q, $ocLazyLoad) => {
-          var deferred = $q.defer();
-
-          require.ensure([], function(require) {
-
-            let component = require('./<%= name %>.component');
-
-            $ocLazyLoad.inject([
-              component.name
-            ])
-            .then(() => $compileProvider.directive('<%= name %>', component))
-            .then(deferred.resolve);
-          }, '<%= name %>');
-
-          return deferred.promise
-        }
-      }
+      template: '<<%= name %>></<%= name %>>'
     });
-});
+})
+
+.component('<%= name %>', <%= name %>Component);
 
 
 export default <%= name %>Module;

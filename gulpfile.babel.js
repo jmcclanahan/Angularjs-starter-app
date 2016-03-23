@@ -37,7 +37,8 @@ let paths = {
   ],
   entry: path.join(__dirname, root, 'app/app.js'),
   output: root,
-  blankTemplates: path.join(__dirname, 'generator', 'component/**/*.**')
+  blankTemplates: path.join(__dirname, 'generator', 'component/**/*.**'),
+  blankLazyLoadTemplates: path.join(__dirname, 'generator', 'lazyLoadComponent/**/*.**')
 };
 
 // use webpack.config.js to build modules
@@ -104,6 +105,25 @@ gulp.task('component', () => {
   const destPath = path.join(resolveToComponents(), parentPath, name);
 
   return gulp.src(paths.blankTemplates)
+    .pipe(template({
+      name: name,
+      upCaseName: cap(name)
+    }))
+    .pipe(rename((path) => {
+      path.basename = path.basename.replace('temp', name);
+    }))
+    .pipe(gulp.dest(destPath));
+});
+
+gulp.task('lazyLoadComponent', () => {
+  const cap = (val) => {
+    return val.charAt(0).toUpperCase() + val.slice(1);
+  };
+  const name = yargs.argv.name;
+  const parentPath = yargs.argv.parent || '';
+  const destPath = path.join(resolveToComponents(), parentPath, name);
+
+  return gulp.src(paths.blankLazyLoadTemplates)
     .pipe(template({
       name: name,
       upCaseName: cap(name)
