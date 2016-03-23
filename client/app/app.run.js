@@ -1,4 +1,4 @@
-let AppRun = ($rootScope, $state, Restangular) => {
+let AppRun = ($rootScope, $state, Restangular, tokenService) => {
    "ngInject";
     Restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
     console.log('inside response', response.status);
@@ -17,20 +17,18 @@ let AppRun = ($rootScope, $state, Restangular) => {
         // redirect to error page
         break;
     }
-    console.log('accessToken', localStorage['accessToken']);
-    console.log('refreshToken', localStorage['refreshToken']);
+
     return response;
   });
 
   let saveTokens = (response, url) => {
-    console.log('inside save tokens');
     const authorizationHeader = response.headers('Authorization');
     if (authorizationHeader) {
         const tokens = authorizationHeader.split(', ');
         const accessToken = tokens[0].slice(1).replace('Bearer ', '');
         const refreshToken = tokens[1].slice(0, -1).replace('Refresh ', '');
-        localStorage['accessToken'] = accessToken;
-        localStorage['refreshToken'] = refreshToken;
+        tokenService.setAccessToken(accessToken);
+        tokenService.setRefreshToken(refreshToken);
     }
   }
 

@@ -1,4 +1,4 @@
-let AuthenticationService = function($state, Restangular) {
+let AuthenticationService = function($state, Restangular, tokenService) {
   "ngInject";
 
   let login = (username, password) => {
@@ -11,8 +11,8 @@ let AuthenticationService = function($state, Restangular) {
   };
 
   let logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    tokenService.removeAccessToken();
+    tokenService.removeRefreshToken();
     $state.go('login');
   };
 

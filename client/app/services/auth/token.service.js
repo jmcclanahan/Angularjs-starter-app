@@ -1,4 +1,5 @@
-let TokenService = function() {
+let TokenService = function($window) {
+  "ngInject";
   /*
    *
    */
@@ -62,7 +63,32 @@ let TokenService = function() {
     this.refreshTokenPromise = refreshTokenPromise;
   }
 
-  return { isTokenExpired, getRolesAndPermissions, getRefreshTokenPromise, setRefreshTokenPromise };
+  let getRefreshToken = () => {
+    return $window.localStorage['refreshToken'];
+  }
+
+  let setRefreshToken = (token) => {
+    $window.localStorage['refreshToken'] = token;
+  }
+
+  let removeRefreshToken = () => {
+    $window.localStorage.removeItem('refreshToken');
+  }
+
+  let getAccessToken = () => {
+    return $window.localStorage['accessToken'];
+  }
+
+  let setAccessToken = (token) => {
+    $window.localStorage['accessToken'] = token;
+  }
+
+  let removeAccessToken = () => {
+    $window.localStorage.removeItem('accessToken');
+  }
+
+  return { isTokenExpired, getRolesAndPermissions, getRefreshTokenPromise, setRefreshTokenPromise,
+           getRefreshToken, setRefreshToken, removeRefreshToken, getAccessToken, setAccessToken, removeAccessToken };
 }
 
 export default TokenService;

@@ -6,7 +6,7 @@ let RefreshTokenService = function($injector) {
     let $http = $injector.get('$http');
     let authorizationService = $injector.get('authorizationService');
     let tokenService = $injector.get('tokenService');
-    const accessToken = localStorage['accessToken'];
+    const accessToken = tokenService.getAccessToken();
 
     // If public route we don't need to do anything
     if (config.url.includes('/public')) {
@@ -24,7 +24,7 @@ let RefreshTokenService = function($injector) {
       }
 
       return tokenService.getRefreshTokenPromise().then(function (response) {
-        const formattedAccessToken = `Bearer ${localStorage['accessToken']}`;
+        const formattedAccessToken = `Bearer ${accessToken}`;
         config.headers = config.headers || {};
         config.headers.Authorization = formattedAccessToken;
         tokenService.setRefreshTokenPromise(null);

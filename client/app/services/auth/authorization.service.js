@@ -2,7 +2,8 @@ let AuthorizationService = function($state, Restangular, tokenService) {
   "ngInject";
 
   let isAuthorized = () => {
-    const accessToken = localStorage['accessToken'];
+    const accessToken = tokenService.getAccessToken();
+
     if (accessToken) {
       return !tokenService.isTokenExpired(accessToken);
     } else {
@@ -11,7 +12,8 @@ let AuthorizationService = function($state, Restangular, tokenService) {
   };
 
   let hasRole = (roleToCheck) => {
-    const rolesAndPermissions = tokenService.getRolesAndPermissions(localStorage['accessToken']);
+    const accessToken = tokenService.getAccessToken();
+    const rolesAndPermissions = tokenService.getRolesAndPermissions(accessToken);
 
     for (var role in rolesAndPermissions) {
       if (roleToCheck === role) {
@@ -23,7 +25,8 @@ let AuthorizationService = function($state, Restangular, tokenService) {
   };
 
   let hasPermission = (permissionToCheck) => {
-    const rolesAndPermissions = tokenService.getRolesAndPermissions(localStorage['accessToken']);
+    const accessToken = tokenService.getAccessToken();
+    const rolesAndPermissions = tokenService.getRolesAndPermissions(accessToken);
 
     for (var role in rolesAndPermissions) {
       for (var permission of rolesAndPermissions[role]) {
@@ -37,18 +40,18 @@ let AuthorizationService = function($state, Restangular, tokenService) {
   };
 
   let refreshToken = () => {
-    const refreshToken = localStorage['refreshToken'];
+    const refreshToken = tokenService.getRefreshToken();
 
     if (refreshToken) {
       const authorizationHeader =  `Refresh ${refreshToken}`;
 
       return Restangular.one('solar-api/api/secured/refresh').customPOST({}, '', {}, {'Authorization': authorizationHeader}).then(function(response) {
         const newAccessToken = response.headers('Authorization').replace('Bearer ', '');
-        localStorage['accessToken'] = newAccessToken;
+        tokenService.setAccessToken(newAccessToken);
         return response;
       }, function(error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        tokenService.removeAccessToken();
+        tokenService.removeRefreshToken();
         $state.go('login');
       });
     } else {
