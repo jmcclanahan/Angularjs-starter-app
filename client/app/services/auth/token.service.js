@@ -1,5 +1,9 @@
 let TokenService = function($window) {
   "ngInject";
+
+  const ACCESS_TOKEN  = 'accessToken';
+  const REFRESH_TOKEN = 'refreshToken';
+
   /*
    *
    */
@@ -64,27 +68,27 @@ let TokenService = function($window) {
   }
 
   let getRefreshToken = () => {
-    return $window.localStorage['refreshToken'];
+    return $window.localStorage[REFRESH_TOKEN];
   }
 
   let setRefreshToken = (token) => {
-    $window.localStorage['refreshToken'] = token;
+    $window.localStorage[REFRESH_TOKEN] = token;
   }
 
   let removeRefreshToken = () => {
-    $window.localStorage.removeItem('refreshToken');
+    $window.localStorage.removeItem(REFRESH_TOKEN);
   }
 
   let getAccessToken = () => {
-    return $window.localStorage['accessToken'];
+    return $window.localStorage[ACCESS_TOKEN];
   }
 
   let setAccessToken = (token) => {
-    $window.localStorage['accessToken'] = token;
+    $window.localStorage[ACCESS_TOKEN] = token;
   }
 
   let removeAccessToken = () => {
-    $window.localStorage.removeItem('accessToken');
+    $window.localStorage.removeItem(ACCESS_TOKEN);
   }
 
   return { isTokenExpired, getRolesAndPermissions, getRefreshTokenPromise, setRefreshTokenPromise,
