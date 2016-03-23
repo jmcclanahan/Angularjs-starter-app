@@ -4,9 +4,6 @@ import './navbar.styl';
 
 let navbarComponent = {
   restrict: 'E',
-  bindings: {
-    showSidebar: '='
-  },
   template,
   controller,
   controllerAs: 'vm'
