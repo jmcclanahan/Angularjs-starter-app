@@ -10,12 +10,30 @@ let AuthorizationService = function($state, Restangular, tokenService) {
     }
   };
 
-  let hasRole = (role) => {
-    tokenService.getRolesAndPermissions();
+  let hasRole = (roleToCheck) => {
+    const rolesAndPermissions = tokenService.getRolesAndPermissions(localStorage['accessToken']);
+
+    for (var role in rolesAndPermissions) {
+      if (roleToCheck === role) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
-  let hasPermission = (permission) => {
+  let hasPermission = (permissionToCheck) => {
+    const rolesAndPermissions = tokenService.getRolesAndPermissions(localStorage['accessToken']);
 
+    for (var role in rolesAndPermissions) {
+      for (var permission of rolesAndPermissions[role]) {
+        if (permissionToCheck === permission) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   };
 
   let refreshToken = () => {
