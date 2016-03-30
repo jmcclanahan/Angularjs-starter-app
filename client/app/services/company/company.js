@@ -1,8 +1,8 @@
 import angular from 'angular';
 import CompanyService from './company.service';
 
-let companyModule = angular.module('company', [])
+let companyModule = angular.module('companyServices', [])
 
-.factory('companyService', CompanyService);
+.service('companyService', CompanyService);
 
 export default companyModule;

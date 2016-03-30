@@ -1,6 +1,7 @@
-let AppConfig = (RestangularProvider, $httpProvider, $injector) => {
+let AppConfig = ($httpProvider, $stateProvider, $injector) => {
   "ngInject";
   $httpProvider.interceptors.push('refreshTokenInterceptor');
+
 }
 
 export default AppConfig;

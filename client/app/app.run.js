@@ -1,4 +1,4 @@
-let AppRun = ($rootScope, $state, Restangular, tokenService) => {
+let AppRun = ($state, Restangular, tokenService) => {
    "ngInject";
     Restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
     console.log('inside response', response.status);

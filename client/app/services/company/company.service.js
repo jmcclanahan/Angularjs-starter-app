@@ -1,8 +1,11 @@
-let CompanyService = function(Restangular) {
-  "ngInject";
+class CompanyService {
+  constructor(Restangular) {
+    "ngInject";
+    this.Restangular = Restangular;
+  }
 
-  let getCompany = () => {
-    return Restangular.one('solar-api/api/secured/company/companyName').get().then(function(resp) {
+  getCompany() {
+    return this.Restangular.one('solar-api/api/secured/company/companyName').get().then(function(resp) {
       console.log('resp', resp);
       return resp;
     }, function(err) {
@@ -10,8 +13,6 @@ let CompanyService = function(Restangular) {
       return err;
     });
   };
-
-  return { getCompany };
 };
 
 export default CompanyService;

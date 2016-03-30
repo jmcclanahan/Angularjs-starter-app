@@ -5,11 +5,9 @@ let aboutModule = angular.module('about', [])
 .config(($stateProvider, $urlRouterProvider) => {
   "ngInject";
 
-  $urlRouterProvider.otherwise('/');
-
   $stateProvider
     .state('about', {
-      url: '/',
+      url: '/about',
       template: '<about></about>'
     });
 })

@@ -1,22 +1,24 @@
-let AuthenticationService = function($state, Restangular, tokenService) {
-  "ngInject";
+class AuthenticationService {
+  constructor($state, Restangular, tokenService) {
+    "ngInject";
+    this.$state = $state;
+    this.Restangular = Restangular;
+    this.tokenService = tokenService;
+  }
 
-  let login = (username, password) => {
+  login(username, password) {
     const usernameAndPassword = username + ":" + password;
     const encodedUsernameAndPassword = btoa(usernameAndPassword); // btoa() encodes a string in base-64
     const authorizationHeader = 'Basic ' + encodedUsernameAndPassword;
 
-    Restangular.all('solar-api/api/public/login').customPOST({}, '', {}, {'Authorization': authorizationHeader}).then(function(response) {
-    });
-  };
+    return this.Restangular.all('solar-api/api/public/login').customPOST({}, '', {}, {'Authorization': authorizationHeader});
+  }
 
-  let logout = () => {
-    tokenService.removeAccessToken();
-    tokenService.removeRefreshToken();
-    $state.go('login');
+  logout() {
+    this.tokenService.removeAccessToken();
+    this.tokenService.removeRefreshToken();
+    this.$state.go('login');
   };
-
-  return { login, logout };
-};
+}
 
 export default AuthenticationService;

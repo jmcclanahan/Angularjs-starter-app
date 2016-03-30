@@ -1,0 +1,27 @@
+<h2>Parent Form</h2>
+<span data-ng-if="parentForm.$invalid" class="label label-danger">NG-INVALID</span>
+<span data-ng-if="parentForm.$valid" class="label label-success">NG-VALID</span>
+<span data-ng-if="parentForm.$pristine" class="label label-info">NG-PRISTINE</span>
+<span data-ng-if="parentForm.$dirty" class="label label-warning">NG-DIRTY</span>
+<div ng-form="parentForm">
+  <h3>Parent Form Input</h3>
+  <input type="text" required data-ng-model="input1" name="input1" />
+                        <span data-ng-if="parentForm.input1.$invalid" class="label label-danger">NG-INVALID</span>
+                        <span data-ng-if="parentForm.input1.$valid" class="label label-success">NG-VALID</span>
+                        <span data-ng-if="parentForm.input1.$pristine" class="label label-info">NG-PRISTINE</span>
+                        <span data-ng-if="parentForm.input1.$dirty" class="label label-warning">NG-DIRTY</span>
+
+<h2>Nested Form</h2>
+<span data-ng-if="sampleStepForm.$invalid" class="label label-danger">NG-INVALID</span>
+<span data-ng-if="sampleStepForm.$valid" class="label label-success">NG-VALID</span>
+<span data-ng-if="sampleStepForm.$pristine" class="label label-info">NG-PRISTINE</span>
+<span data-ng-if="sampleStepForm.$dirty" class="label label-warning">NG-DIRTY</span>
+  <div ng-form="sampleStepForm" isolate-form>
+    <h3>Nested Form Input</h3>
+    <input type="text" required data-ng-model="input2" name="input2" />
+    <span data-ng-if="sampleStepForm.input2.$invalid" class="label label-danger">NG-INVALID</span>
+                        <span data-ng-if="sampleStepForm.input2.$valid" class="label label-success">NG-VALID</span>
+                        <span data-ng-if="sampleStepForm.input2.$pristine" class="label label-info">NG-PRISTINE</span>
+                        <span data-ng-if="sampleStepForm.input2.$dirty" class="label label-warning">NG-DIRTY</span>
+  </div>
+</div>

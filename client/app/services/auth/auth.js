@@ -3,10 +3,10 @@ import AuthenticationService from './authentication.service';
 import AuthorizationService from './authorization.service';
 import TokenService from './token.service';
 
-let authModule = angular.module('auth', [])
+let authModule = angular.module('authServices', [])
 
-.factory('authenticationService', AuthenticationService)
-.factory('authorizationService', AuthorizationService)
-.factory('tokenService', TokenService);
+.service('authenticationService', AuthenticationService)
+.service('authorizationService', AuthorizationService)
+.service('tokenService', TokenService);
 
 export default authModule;

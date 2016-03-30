@@ -10,7 +10,7 @@ class NavbarController {
   }
 
   logout() {
-    this.authenticationService.logout && this.authenticationService.logout();
+    this.authenticationService.logout();
   }
 
   isAuthorized() {

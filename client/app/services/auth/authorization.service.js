@@ -1,19 +1,24 @@
-let AuthorizationService = function($state, Restangular, tokenService) {
-  "ngInject";
+class AuthorizationService {
+  constructor($state, Restangular, tokenService) {
+    "ngInject";
+    this.$state = $state;
+    this.Restangular = Restangular;
+    this.tokenService = tokenService;
+  }
 
-  let isAuthorized = () => {
-    const accessToken = tokenService.getAccessToken();
+  isAuthorized() {
+    const accessToken = this.tokenService.getAccessToken();
 
     if (accessToken) {
-      return !tokenService.isTokenExpired(accessToken);
+      return !this.tokenService.isTokenExpired(accessToken);
     } else {
       return false;
     }
-  };
+  }
 
-  let hasRole = (roleToCheck) => {
-    const accessToken = tokenService.getAccessToken();
-    const rolesAndPermissions = tokenService.getRolesAndPermissions(accessToken);
+  hasRole(roleToCheck) {
+    const accessToken = this.tokenService.getAccessToken();
+    const rolesAndPermissions = this.tokenService.getRolesAndPermissions(accessToken);
 
     for (var role in rolesAndPermissions) {
       if (roleToCheck === role) {
@@ -22,11 +27,11 @@ let AuthorizationService = function($state, Restangular, tokenService) {
     }
 
     return false;
-  };
+  }
 
-  let hasPermission = (permissionToCheck) => {
-    const accessToken = tokenService.getAccessToken();
-    const rolesAndPermissions = tokenService.getRolesAndPermissions(accessToken);
+  hasPermission(permissionToCheck) {
+    const accessToken = this.tokenService.getAccessToken();
+    const rolesAndPermissions = this.tokenService.getRolesAndPermissions(accessToken);
 
     for (var role in rolesAndPermissions) {
       for (var permission of rolesAndPermissions[role]) {
@@ -37,29 +42,28 @@ let AuthorizationService = function($state, Restangular, tokenService) {
     }
 
     return false;
-  };
+  }
 
-  let refreshToken = () => {
-    const refreshToken = tokenService.getRefreshToken();
+  refreshToken() {
+    const refreshToken = this.tokenService.getRefreshToken();
 
     if (refreshToken) {
       const authorizationHeader =  `Refresh ${refreshToken}`;
 
-      return Restangular.one('solar-api/api/secured/refresh').customPOST({}, '', {}, {'Authorization': authorizationHeader}).then(function(response) {
-        const newAccessToken = response.headers('Authorization').replace('Bearer ', '');
-        tokenService.setAccessToken(newAccessToken);
-        return response;
-      }, function(error) {
-        tokenService.removeAccessToken();
-        tokenService.removeRefreshToken();
-        $state.go('login');
-      });
+      return this.Restangular.one('solar-api/api/secured/refresh').customPOST({}, '', {}, {'Authorization': authorizationHeader})
+        .then((response) => {
+          const newAccessToken = response.headers('Authorization').replace('Bearer ', '');
+          this.tokenService.setAccessToken(newAccessToken);
+          return response;
+        }, (error) => {
+          this.tokenService.removeAccessToken();
+          this.tokenService.removeRefreshToken();
+          this.$state.go('login');
+        });
     } else {
-      $state.go('login');
+      this.$state.go('login');
     }
-  };
-
-  return { isAuthorized, hasRole, hasPermission, refreshToken };
+  }
 };
 
 export default AuthorizationService;

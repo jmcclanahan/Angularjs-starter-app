@@ -18,6 +18,7 @@
         <ul class="nav navbar-nav">
           <li class="active" ng-show="vm.isAuthorized()"><a ui-sref="home">Home</a></li>
           <li class="active" ng-show="vm.isAuthorized()"><a ui-sref="about">About</a></li>
+          <li class="active" ng-show="vm.isAuthorized()"><a ui-sref="samplewizard">SampleWizard</a></li>
           <li ng-show="!vm.isAuthorized()"><a ui-sref="login">Sign in</a></li>
           <li ng-show="vm.isAuthorized()"><a ng-click="vm.logout()" class="pointer">Sign out</a></li>
         </ul>

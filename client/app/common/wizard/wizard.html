@@ -1,0 +1,32 @@
+<h1>{{vm.title}}</h1>
+<div class="row">
+  <div class="col-md-12">
+    <ng-form name="{{ vm.parent.formName }}" novalidate>
+      <div class="row">
+        <div class="stepwizard">
+          <div class="stepwizard-row">
+            <div class="stepwizard-step" ng-repeat="step in vm.steps">
+              <button class="btn btn-circle" ng-class="vm.isCurrentStep($index) ? 'btn-primary' : 'btn-default'"
+                ng-click="vm.setCurrentStep($index)" ng-disabled="$index > vm.getCurrentStepIndex()" type="button">{{ $index + 1 }}</button>
+              <p>{{ step.name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-primary row-spacer-20">
+        <div class="panel-heading">{{ vm.getCurrentStep().name }}</div>
+        <div class="panel-body wizard-container">
+          <div ng-transclude></div>
+        </div>
+        <div class="panel-footer clearfix">
+          <div class="btn-group" role="group">
+            <button class="btn btn-default" ng-click="vm.handlePrevious()" ng-disabled="vm.isFirstStep()">Previous</button>
+            <button class="btn btn-default" ng-click="vm.handleNext()" ng-disabled="vm.isLastStep()">Next</button>
+            <button class="btn btn-default" ng-click="vm.finish()" ng-disabled="!vm.isLastStep()">Finish</button>
+            <button class="btn btn-default" ui-sref="home">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </ng-form>
+  </div>
+</div>
